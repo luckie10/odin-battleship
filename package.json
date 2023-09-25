@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "description": "My webpack project",
-  "name": "my-webpack-project",
+  "description": "Project: Battleship",
+  "name": "odin-battleship",
   "scripts": {
     "test": "jest --watch",
     "build": "webpack --mode=production --node-env=production",
