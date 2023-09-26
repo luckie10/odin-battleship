@@ -1,6 +1,6 @@
 import Ship from "./ship";
 
-const Gameboard = () => {
+const Gameboard = (size = [10, 10]) => {
   const board = new Map();
   let activeShips = 0;
 
@@ -39,6 +39,7 @@ const Gameboard = () => {
   const hasActiveShips = () => activeShips > 0;
 
   return {
+    size,
     board,
     placeShip,
     clearBoard,
