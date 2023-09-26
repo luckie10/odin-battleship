@@ -4,10 +4,8 @@ const Player = (gameboard, name = "") => {
   };
 
   const getRandomCoord = () => {
-    // const yAxisDictionary = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
     const x = getRandomRange(0, 9);
     const y = getRandomRange(0, 9);
-    // const y = yAxisDictionary[getRandomRange(0, 9)];
 
     return `${y}${x}`;
   };
