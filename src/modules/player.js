@@ -18,13 +18,13 @@ const Player = (gameboard, name = "") => {
     return gameboard.recieveAttack(randomCoord);
   };
 
-  const placeAttack = (gameboard, coord) => gameboard.recieveAttack(coord);
+  const recieveAttack = (coord) => gameboard.recieveAttack(coord);
 
   return {
     name,
     gameboard,
     placeRandomAttack,
-    placeAttack,
+    recieveAttack,
   };
 };
 

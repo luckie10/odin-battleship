@@ -8,9 +8,8 @@ test("Place an attack that misses", () => {
 });
 
 test("Place an attack that hits", () => {
-  const attacker = Player(Gameboard(), "attacker");
   const board = Gameboard();
   board.placeShip(["00", "01", "02"]);
-  const defeneder = Player(board, "defender");
-  expect(attacker.placeAttack(defeneder.gameboard, "01")).toBe("hit");
+  const defender = Player(board, "defender");
+  expect(defender.recieveAttack("01")).toBe("hit");
 });
