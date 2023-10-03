@@ -2,6 +2,7 @@ import Ship from "./ship";
 
 const Gameboard = (size = [10, 10]) => {
   let activeShips = 0;
+  const attackableCoords = [];
 
   const generateBoard = ([x, y]) => {
     const board = new Map();
@@ -9,6 +10,7 @@ const Gameboard = (size = [10, 10]) => {
     for (let i = 0; i < y; i++) {
       for (let j = 0; j < x; j++) {
         board.set(`${i}${j}`, null);
+        attackableCoords.push(`${i}${j}`);
       }
     }
     return board;
@@ -36,21 +38,25 @@ const Gameboard = (size = [10, 10]) => {
   };
 
   const recieveAttack = (coord) => {
-    if (!board.get(coord)) {
+    const coordIndex = attackableCoords.indexOf(coord);
+    attackableCoords.splice(coordIndex, 1);
+
+    const boardCell = board.get(coord);
+    if (!boardCell) {
       board.set(coord, "miss");
       return "miss";
     }
 
-    const ship = board.get(coord);
-    ship.hit();
+    boardCell.hit();
     board.set(coord, "hit");
-    if (ship.isSunk()) activeShips--;
+    if (boardCell.isSunk()) activeShips--;
     return "hit";
   };
 
   const hasActiveShips = () => activeShips > 0;
 
   return {
+    attackableCoords,
     size,
     board,
     placeShip,
