@@ -10,6 +10,37 @@
   padding: 0;
 }
 
+.invisible {
+  display: none;
+}
+
+.game-over-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+.game-over {
+  background-color: white;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.message {
+  padding: 50px;
+  font-size: 2em;
+}
+
+.again {
+  padding: 10px 20px;
+  border: 1px solid black;
+}
+
 .main-container {
   padding: 50px;
   display: flex;

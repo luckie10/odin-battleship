@@ -9,6 +9,14 @@ const UI = (() => {
     ".opponent-grid-container"
   );
 
+  const showGameover = (msg) => {
+    const container = document.querySelector(".game-over-container");
+    const message = container.querySelector(".message");
+
+    message.textContent = msg;
+    container.classList.remove("invisible");
+  };
+
   const updatePlayerGrid = (result, coord) => {
     const cell = playerGridContainer.querySelector(`.grid .cell-${coord}`);
     cell.classList.add(result);
@@ -65,6 +73,7 @@ const UI = (() => {
     updatePlayerGrid,
     renderPlayerGrid,
     renderOpponentGrid,
+    showGameover,
   };
 })();
 
