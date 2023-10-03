@@ -3,19 +3,17 @@ const Player = (gameboard, name = "") => {
     return Math.random() * (max - min) + min;
   };
 
-  const getRandomCoord = () => {
-    const x = getRandomRange(0, 9);
-    const y = getRandomRange(0, 9);
+  const placeRandomAttack = () => {
+    let randomIndex = Math.floor(
+      getRandomRange(0, gameboard.attackableCoords.length)
+    );
+    let randomCoord = gameboard.attackableCoords[randomIndex];
 
-    return `${y}${x}`;
-  };
-
-  const placeRandomAttack = (gameboard) => {
-    let randomCoord;
-    do randomCoord = getRandomCoord();
-    while (gameboard.board.has(randomCoord));
-
-    return gameboard.recieveAttack(randomCoord);
+    const result = gameboard.recieveAttack(randomCoord);
+    return {
+      result,
+      coord: randomCoord,
+    };
   };
 
   const recieveAttack = (coord) => gameboard.recieveAttack(coord);

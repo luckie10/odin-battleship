@@ -2,9 +2,8 @@ import Player from "./player";
 import Gameboard from "./gameboard";
 
 test("Place an attack that misses", () => {
-  const attacker = Player(Gameboard(), "attacker");
   const defeneder = Player(Gameboard(), "defender");
-  expect(attacker.placeRandomAttack(defeneder.gameboard)).toBe("miss");
+  expect(defeneder.placeRandomAttack().result).toBe("miss");
 });
 
 test("Place an attack that hits", () => {
