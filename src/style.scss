@@ -1,0 +1,39 @@
+:root {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+.main-container {
+  padding: 50px;
+  display: flex;
+  gap: 50px;
+}
+
+.grid {
+  display: grid;
+  width: 500px;
+  height: 500px;
+}
+
+.grid-cell {
+  border: 1px solid black;
+}
+
+.miss {
+  background-color: yellow;
+}
+
+.hit {
+  background-color: red;
+}
+
+.ship {
+  background-color: grey;
+}
