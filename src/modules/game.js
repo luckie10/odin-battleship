@@ -33,6 +33,8 @@ const Game = (() => {
 
   return {
     checkState,
+    player,
+    opponent,
   };
 })();
 

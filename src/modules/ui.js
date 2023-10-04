@@ -1,4 +1,4 @@
-import { createElement } from "../util";
+import { createElement, removeAllChildren } from "../util";
 import Game from "./game";
 
 import "../style.scss";
@@ -8,10 +8,23 @@ const UI = (() => {
   const opponentGridContainer = document.querySelector(
     ".opponent-grid-container"
   );
+  const container = document.querySelector(".game-over-container");
+  const message = container.querySelector(".message");
+  const againButton = container.querySelector(".again");
 
-  const showGameover = (msg) => {
-    const container = document.querySelector(".game-over-container");
-    const message = container.querySelector(".message");
+  const resetGame = () => {
+    const player = Game.player;
+    const opp = Game.opponent;
+
+    player.setGameboard();
+    opp.setGameboard();
+
+    clearPlayerGrids();
+    renderPlayerGrids(player, opp);
+    toggleGameover();
+  };
+
+  againButton.addEventListener("click", resetGame);
 
   const toggleGameover = (msg) => {
     message.textContent = msg;
@@ -64,6 +77,10 @@ const UI = (() => {
     return grid;
   };
 
+  const clearPlayerGrids = () => {
+    removeAllChildren(playerGridContainer);
+    removeAllChildren(opponentGridContainer);
+  };
 
   const renderPlayerGrids = (player, opponent) => {
     playerGridContainer.append(generateGrid(player, true));
