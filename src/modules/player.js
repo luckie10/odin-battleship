@@ -1,4 +1,9 @@
-const Player = (gameboard, name = "") => {
+import Gameboard from "./gameboard";
+
+const Player = (gameboard = Gameboard(), name = "") => {
+  const getGameboard = () => gameboard;
+  const setGameboard = (board = Gameboard()) => (gameboard = board);
+
   const getRandomRange = (min, max) => {
     return Math.random() * (max - min) + min;
   };
@@ -20,7 +25,8 @@ const Player = (gameboard, name = "") => {
 
   return {
     name,
-    gameboard,
+    getGameboard,
+    setGameboard,
     placeRandomAttack,
     recieveAttack,
   };
