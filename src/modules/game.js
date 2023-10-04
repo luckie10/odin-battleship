@@ -18,8 +18,7 @@ const Game = (() => {
   const player = Player(aBoard, "player");
   const opponent = Player(oppBoard, "opponent");
 
-  UI.renderPlayerGrid(player);
-  UI.renderOpponentGrid(opponent);
+  UI.renderPlayerGrids(player, opponent);
 
   const checkState = () => {
     if (!opponent.gameboard.hasActiveShips()) UI.showGameover("You Win!");

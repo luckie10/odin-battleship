@@ -63,17 +63,16 @@ const UI = (() => {
     return grid;
   };
 
-  const renderPlayerGrid = (player) =>
-    playerGridContainer.append(generateGrid(player, true));
 
-  const renderOpponentGrid = (player) =>
-    opponentGridContainer.append(generateGrid(player, false));
+  const renderPlayerGrids = (player, opponent) => {
+    playerGridContainer.append(generateGrid(player, true));
+    opponentGridContainer.append(generateGrid(opponent, false));
+  };
 
   return {
     updatePlayerGrid,
-    renderPlayerGrid,
-    renderOpponentGrid,
     showGameover,
+    renderPlayerGrids,
   };
 })();
 
