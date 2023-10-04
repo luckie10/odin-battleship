@@ -13,8 +13,9 @@ const UI = (() => {
     const container = document.querySelector(".game-over-container");
     const message = container.querySelector(".message");
 
+  const toggleGameover = (msg) => {
     message.textContent = msg;
-    container.classList.remove("invisible");
+    container.classList.toggle("invisible");
   };
 
   const updatePlayerGrid = (result, coord) => {
@@ -71,8 +72,8 @@ const UI = (() => {
 
   return {
     updatePlayerGrid,
-    showGameover,
     renderPlayerGrids,
+    toggleGameover,
   };
 })();
 

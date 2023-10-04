@@ -21,13 +21,14 @@ const Game = (() => {
   UI.renderPlayerGrids(player, opponent);
 
   const checkState = () => {
-    if (!opponent.gameboard.hasActiveShips()) UI.showGameover("You Win!");
+    if (!opponent.getGameboard().hasActiveShips())
+      UI.toggleGameover("You Win!");
 
     const { result, coord } = player.placeRandomAttack();
 
     UI.updatePlayerGrid(result, coord);
 
-    if (!player.gameboard.hasActiveShips()) UI.showGameover("You Lose!");
+    if (!player.getGameboard().hasActiveShips()) UI.toggleGameover("You Lose!");
   };
 
   return {
