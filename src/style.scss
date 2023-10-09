@@ -68,3 +68,27 @@
 .hit {
   background-color: red;
 }
+
+.place-ships-container {
+  max-width: 500px;
+  max-height: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.place-ship {
+  border: 3px solid teal;
+  padding: 2px;
+  display: flex;
+}
+
+.place-ship-cell {
+  background-color: gray;
+  border: 1px solid teal;
+  width: calc(500px / 10);
+  height: calc(500px / 10);
+}

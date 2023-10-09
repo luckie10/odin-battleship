@@ -79,6 +79,63 @@ const UI = (() => {
     return grid;
   };
 
+  const rotateShip = (event) => {
+    let target = event.target;
+    if (target.classList.contains("place-ship-cell"))
+      target = target.parentNode;
+
+    const parent = target.parentNode;
+    const previousSibling = target.previousSibling;
+
+    if (parent) {
+      const { length, vertical } = target.dataset;
+      parent.removeChild(target);
+      if (previousSibling)
+        previousSibling.after(
+          renderShip(length, vertical === "true" ? false : true)
+        );
+      else
+        parent.firstChild.before(
+          renderShip(length, vertical === "true" ? false : true)
+        );
+    }
+  };
+
+  const renderShip = (length, verticalOriention = true) => {
+    const ship = createElement("div", {
+      class: "place-ship",
+      draggable: true,
+      "data-length": length,
+      "data-vertical": verticalOriention,
+    });
+    ship.style["flex-direction"] = verticalOriention ? "column" : "row";
+    ship.addEventListener("dblclick", rotateShip);
+
+    for (let i = 0; i < length; i++) {
+      const cell = createElement("div", {
+        class: "place-ship-cell",
+        "data-cell": i,
+      });
+
+      ship.append(cell);
+    }
+
+    return ship;
+  };
+
+  const renderShips = () => {
+    const shipsContainer = createElement("div", {
+      class: "place-ships-container",
+    });
+
+    shipsContainer.append(renderShip(5));
+    shipsContainer.append(renderShip(4));
+    shipsContainer.append(renderShip(3));
+    shipsContainer.append(renderShip(3));
+    shipsContainer.append(renderShip(2));
+    rightContainer.append(shipsContainer);
+  };
+
   const clearGridContainers = () => {
     removeAllChildren(leftContainer);
     removeAllChildren(rightContainer);
@@ -91,12 +148,16 @@ const UI = (() => {
     attachAttackListeners(rightContainer);
   };
 
+  const renderShipPlacement = (player) => {
+    leftContainer.append(generateGrid(player));
+    renderShips();
   };
 
   return {
     updatePlayerGrid,
     renderPlayerGrids,
     toggleGameover,
+    renderShipPlacement,
   };
 })();
 
