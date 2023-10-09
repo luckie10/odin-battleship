@@ -34,28 +34,32 @@ const UI = (() => {
     cell.classList.add(result);
   };
 
-  const sendAttack = (opponent, key, target) => {
-    const result = opponent.recieveAttack(key);
+  const sendAttack = (event) => {
+    const opponent = Game.getOpponent();
+    const target = event.target;
+    const coords = target.dataset.coords;
+    const result = opponent.recieveAttack(coords);
 
     if (result) target.classList.add(result);
     Game.checkState();
   };
 
-  const generateCell = (value, key, player, isPlayer) => {
-    const cell = createElement("div", { class: `grid-cell cell-${key}` });
+  const attachAttackListeners = (parent) => {
+    const cells = parent.querySelectorAll(".grid-cell");
+    cells.forEach((cell) =>
+      cell.addEventListener("click", sendAttack, { once: true })
+    );
+  };
+
+  const generateCell = (value, key, isPlayer) => {
+    const cell = createElement("div", {
+      class: `grid-cell`,
+      "data-coords": key,
+    });
 
     if (value === "hit" || value === "miss") cell.classList.add(value);
     else if (value) {
       if (isPlayer) cell.classList.add("ship");
-      else
-        cell.addEventListener("click", () => sendAttack(player, key, cell), {
-          once: true,
-        });
-    } else {
-      if (!isPlayer)
-        cell.addEventListener("click", () => sendAttack(player, key, cell), {
-          once: true,
-        });
     }
 
     return cell;
@@ -69,7 +73,7 @@ const UI = (() => {
     grid.style.gridTemplateRows = `repeat(${y}, 1fr)`;
 
     board.forEach((value, key) =>
-      grid.append(generateCell(value, key, player, isPlayer))
+      grid.append(generateCell(value, key, isPlayer))
     );
 
     return grid;
@@ -83,6 +87,10 @@ const UI = (() => {
   const renderPlayerGrids = (player, opponent) => {
     leftContainer.append(generateGrid(player, true));
     rightContainer.append(generateGrid(opponent, false));
+
+    attachAttackListeners(rightContainer);
+  };
+
   };
 
   return {
