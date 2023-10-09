@@ -5,8 +5,9 @@ function Ship(length) {
 
   const isSunk = () => hp <= 0;
 
+  const getLength = () => length;
   return {
-    length,
+    getLength,
     hit,
     isSunk,
   };
