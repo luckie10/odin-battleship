@@ -4,13 +4,11 @@ import Game from "./game";
 import "../style.scss";
 
 const UI = (() => {
-  const playerGridContainer = document.querySelector(".player-grid-container");
-  const opponentGridContainer = document.querySelector(
-    ".opponent-grid-container"
-  );
-  const container = document.querySelector(".game-over-container");
-  const message = container.querySelector(".message");
-  const againButton = container.querySelector(".again");
+  const leftContainer = document.querySelector(".left-container");
+  const rightContainer = document.querySelector(".right-container");
+  const gameoverContainer = document.querySelector(".game-over-container");
+  const message = gameoverContainer.querySelector(".message");
+  const againButton = gameoverContainer.querySelector(".again");
 
   const resetGame = () => {
     const player = Game.player;
@@ -19,7 +17,7 @@ const UI = (() => {
     player.setGameboard();
     opp.setGameboard();
 
-    clearPlayerGrids();
+    clearGridContainers();
     renderPlayerGrids(player, opp);
     toggleGameover();
   };
@@ -28,11 +26,11 @@ const UI = (() => {
 
   const toggleGameover = (msg) => {
     message.textContent = msg;
-    container.classList.toggle("invisible");
+    gameoverContainer.classList.toggle("invisible");
   };
 
   const updatePlayerGrid = (result, coord) => {
-    const cell = playerGridContainer.querySelector(`.grid .cell-${coord}`);
+    const cell = leftContainer.querySelector(`.grid .cell-${coord}`);
     cell.classList.add(result);
   };
 
@@ -77,14 +75,14 @@ const UI = (() => {
     return grid;
   };
 
-  const clearPlayerGrids = () => {
-    removeAllChildren(playerGridContainer);
-    removeAllChildren(opponentGridContainer);
+  const clearGridContainers = () => {
+    removeAllChildren(leftContainer);
+    removeAllChildren(rightContainer);
   };
 
   const renderPlayerGrids = (player, opponent) => {
-    playerGridContainer.append(generateGrid(player, true));
-    opponentGridContainer.append(generateGrid(opponent, false));
+    leftContainer.append(generateGrid(player, true));
+    rightContainer.append(generateGrid(opponent, false));
   };
 
   return {
