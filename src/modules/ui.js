@@ -11,8 +11,8 @@ const UI = (() => {
   const againButton = gameoverContainer.querySelector(".again");
 
   const resetGame = () => {
-    const player = Game.player;
-    const opp = Game.opponent;
+    const player = Game.getPlayer();
+    const opp = Game.getOpponent();
 
     player.setGameboard();
     opp.setGameboard();
