@@ -3,7 +3,7 @@ import Ship from "./ship.js";
 let ship;
 describe("ship params", () => {
   beforeAll(() => {
-    ship = Ship(3);
+    ship = Ship("cruiser");
   });
 
   test("Ship has a length", () => {
@@ -13,7 +13,7 @@ describe("ship params", () => {
 
 describe("ship functions", () => {
   beforeAll(() => {
-    ship = Ship(3);
+    ship = Ship("cruiser");
   });
 
   test("Accepts a hit", () => {

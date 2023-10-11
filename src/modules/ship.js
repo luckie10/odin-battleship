@@ -1,16 +1,39 @@
-function Ship(length) {
-  let hp = length;
+import { stateAccess } from "../util";
 
-  const hit = () => (hp-- > 0 ? true : false);
+const shipTypes = [
+  "carrier",
+  "battleship",
+  "cruiser",
+  "submarine",
+  "destroyer",
+];
 
-  const isSunk = () => hp <= 0;
+const shipLength = {
+  carrier: 5,
+  battleship: 4,
+  cruiser: 3,
+  submarine: 3,
+  destroyer: 2,
+};
 
-  const getLength = () => length;
+function Ship(type, vertical = false) {
+  const state = {
+    vertical,
+  };
+
+  let length = shipLength[type];
+
+  const hit = () => (length-- > 0 ? true : false);
+
+  const isSunk = () => length <= 0;
+
   return {
-    getLength,
+    ...stateAccess(state),
+    type,
+    length,
     hit,
     isSunk,
   };
 }
 
-export default Ship;
+export { Ship as default, shipTypes };

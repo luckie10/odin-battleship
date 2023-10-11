@@ -1,6 +1,19 @@
+import { stateAccess } from "../util";
 import Gameboard from "./gameboard";
+import Ship, { shipTypes } from "./ship";
+
+const generateFleet = (types) => {
+  const fleet = {};
+  types.forEach((type) => (fleet[type] = Ship(type)));
+  return fleet;
+};
 
 const Player = (gameboard = Gameboard(), name = "") => {
+  const state = {
+    gameboard,
+    fleet: generateFleet(shipTypes),
+  };
+
   const getGameboard = () => gameboard;
   const setGameboard = (board = Gameboard()) => (gameboard = board);
 
@@ -25,8 +38,10 @@ const Player = (gameboard = Gameboard(), name = "") => {
 
   return {
     name,
+    ...stateAccess(state),
     getGameboard,
     setGameboard,
+    resetGameboard,
     placeRandomAttack,
     recieveAttack,
   };
