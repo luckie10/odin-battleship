@@ -14,8 +14,8 @@ const UI = (() => {
     const player = Game.getPlayer();
     const opp = Game.getOpponent();
 
-    player.setGameboard();
-    opp.setGameboard();
+    player.resetGameboard();
+    opp.resetGameboard();
 
     clearGridContainers();
     renderPlayerGrids(player, opp);
