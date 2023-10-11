@@ -25,4 +25,18 @@ function removeAllChildren(element) {
   }
 }
 
-export { createElement, removeAllChildren };
+const stateAccess = (state) => ({
+  set(para, value) {
+    state[para] = value;
+  },
+
+  get(para) {
+    return state[para];
+  },
+
+  getState: () => {
+    return state;
+  },
+});
+
+export { createElement, removeAllChildren, stateAccess };
