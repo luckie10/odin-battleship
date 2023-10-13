@@ -1,7 +1,10 @@
-import Ship from "./ship";
+import { stateAccess } from "../util";
 
 const Gameboard = (size = [10, 10]) => {
-  let activeShips = 0;
+  const state = {
+    activeShips: 0,
+  };
+
   const attackableCoords = [];
 
   const generateBoard = ([x, y]) => {
@@ -18,22 +21,20 @@ const Gameboard = (size = [10, 10]) => {
 
   const board = generateBoard(size);
 
-  const placeShip = (coords) => {
-    const ship = Ship(coords.length);
-
+  const placeShip = (coords, ship) => {
     coords.map((coord) => {
       if (board.get(coord))
         throw new Error(`A ship already exists at the ${coord} location`);
 
       board.set(coord, ship);
     });
-    activeShips++;
+    state.activeShips++;
 
     return ship;
   };
 
   const clearBoard = () => {
-    activeShips = 0;
+    state.activeShips = 0;
     board.clear();
   };
 
@@ -49,13 +50,16 @@ const Gameboard = (size = [10, 10]) => {
 
     boardCell.hit();
     board.set(coord, "hit");
-    if (boardCell.isSunk()) activeShips--;
+    if (boardCell.isSunk()) {
+      state.activeShips--;
+    }
     return "hit";
   };
 
-  const hasActiveShips = () => activeShips > 0;
+  const hasActiveShips = () => state.activeShips > 0;
 
   return {
+    ...stateAccess(state),
     attackableCoords,
     size,
     board,
