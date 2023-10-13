@@ -15,7 +15,7 @@ const Player = (gameboard = Gameboard(), name = "") => {
   };
 
   const getGameboard = () => gameboard;
-  const setGameboard = (board = Gameboard()) => (gameboard = board);
+
   const resetGameboard = () => (gameboard = Gameboard());
 
   const getRandomRange = (min, max) => {
@@ -38,10 +38,8 @@ const Player = (gameboard = Gameboard(), name = "") => {
   const recieveAttack = (coord) => gameboard.recieveAttack(coord);
 
   return {
-    name,
     ...stateAccess(state),
     getGameboard,
-    setGameboard,
     resetGameboard,
     placeRandomAttack,
     recieveAttack,
