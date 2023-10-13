@@ -1,22 +1,29 @@
 import Gameboard from "./gameboard.js";
+import Player from "./player.js";
 
 let gb;
+let player;
+let fleet;
 
 beforeAll(() => {
   gb = Gameboard();
+  player = Player(gb);
+  fleet = player.get("fleet");
 });
 
 describe("placeShip function", () => {
   test("Place ships by calling Ship factory", () => {
-    const ship = gb.placeShip(["a0", "b0", "c0"]);
+    const ship = gb.placeShip(["a0", "b0", "c0"], fleet["cruiser"]);
     expect(gb.board.get("a0")).toBe(ship);
     expect(gb.board.get("b0")).toBe(ship);
     expect(gb.board.get("c0")).toBe(ship);
   });
 
   test("Ships cannot overlap locations", () => {
-    gb.placeShip(["a1", "a2", "a3", "a4"]);
-    expect(() => gb.placeShip(["a3", "b3", "c3", "d4"])).toThrow(Error);
+    gb.placeShip(["a1", "a2", "a3", "a4"], fleet["battleship"]);
+    expect(() =>
+      gb.placeShip(["a3", "b3", "c3", "d4"], fleet["battleship"])
+    ).toThrow(Error);
   });
 
   afterAll(() => {
@@ -26,7 +33,7 @@ describe("placeShip function", () => {
 
 describe("recieveAttack function", () => {
   beforeAll(() => {
-    gb.placeShip(["c5", "c6", "c7", "c8"]);
+    gb.placeShip(["c5", "c6", "c7", "c8"], fleet["battleship"]);
   });
 
   test("Attack hits a ship", () => {
