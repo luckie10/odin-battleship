@@ -1,5 +1,6 @@
 import Player from "./player";
 import Gameboard from "./gameboard";
+import Ship from "./ship";
 
 test("Place an attack that misses", () => {
   const defeneder = Player(Gameboard(), "defender");
@@ -8,7 +9,8 @@ test("Place an attack that misses", () => {
 
 test("Place an attack that hits", () => {
   const board = Gameboard();
-  board.placeShip(["00", "01", "02"]);
   const defender = Player(board, "defender");
+  const ship = defender.get("fleet")["cruiser"];
+  board.placeShip(["00", "01", "02"], ship);
   expect(defender.recieveAttack("01")).toBe("hit");
 });
