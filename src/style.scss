@@ -81,8 +81,6 @@
 }
 
 .place-ship {
-  border: 3px solid teal;
-  padding: 2px;
   display: flex;
 }
 
@@ -91,4 +89,8 @@
   border: 1px solid teal;
   width: calc(500px / 10);
   height: calc(500px / 10);
+}
+
+.vertical {
+  flex-direction: column;
 }

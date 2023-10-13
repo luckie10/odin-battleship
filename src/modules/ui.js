@@ -1,5 +1,6 @@
 import { createElement, removeAllChildren } from "../util";
 import Game from "./game";
+import DragNDrop from "./dragndrop";
 
 import "../style.scss";
 
@@ -79,61 +80,51 @@ const UI = (() => {
     return grid;
   };
 
-  const rotateShip = (event) => {
-    let target = event.target;
-    if (target.classList.contains("place-ship-cell"))
-      target = target.parentNode;
+  const rotateShip = (event, player) => {
+    const target = event.target.parentElement;
+    const ship = player.get("fleet")[target.dataset.ship];
 
-    const parent = target.parentNode;
-    const previousSibling = target.previousSibling;
-
-    if (parent) {
-      const { length, vertical } = target.dataset;
-      parent.removeChild(target);
-      if (previousSibling)
-        previousSibling.after(
-          renderShip(length, vertical === "true" ? false : true)
-        );
-      else
-        parent.firstChild.before(
-          renderShip(length, vertical === "true" ? false : true)
-        );
-    }
+    target.classList.toggle("vertical");
+    ship.toggleVertical();
   };
 
-  const renderShip = (length, verticalOriention = true) => {
-    const ship = createElement("div", {
-      class: "place-ship",
-      draggable: true,
-      "data-length": length,
-      "data-vertical": verticalOriention,
-    });
-    ship.style["flex-direction"] = verticalOriention ? "column" : "row";
-    ship.addEventListener("dblclick", rotateShip);
+  const addRotateEventListener = (elementSelector, player) => {
+    const elements = document.querySelectorAll(elementSelector);
 
-    for (let i = 0; i < length; i++) {
+    elements.forEach((el) =>
+      el.addEventListener("dblclick", (e) => rotateShip(e, player))
+    );
+  };
+
+  const renderShip = (ship) => {
+    const shipContainer = createElement("div", {
+      class: `place-ship ${ship.get("vertical") ? "vertical" : ""}`,
+      draggable: true,
+      "data-ship": ship.type,
+    });
+
+    for (let i = 0; i < ship.length; i++) {
       const cell = createElement("div", {
         class: "place-ship-cell",
         "data-cell": i,
       });
 
-      ship.append(cell);
+      shipContainer.append(cell);
     }
 
-    return ship;
+    return shipContainer;
   };
 
-  const renderShips = () => {
+  const generateFleet = (fleet) => {
     const shipsContainer = createElement("div", {
       class: "place-ships-container",
     });
 
-    shipsContainer.append(renderShip(5));
-    shipsContainer.append(renderShip(4));
-    shipsContainer.append(renderShip(3));
-    shipsContainer.append(renderShip(3));
-    shipsContainer.append(renderShip(2));
-    rightContainer.append(shipsContainer);
+    for (const type in fleet) {
+      shipsContainer.append(renderShip(fleet[type]));
+    }
+
+    return shipsContainer;
   };
 
   const clearGridContainers = () => {
@@ -150,7 +141,9 @@ const UI = (() => {
 
   const renderShipPlacement = (player) => {
     leftContainer.append(generateGrid(player));
-    renderShips();
+    rightContainer.append(generateFleet(player.get("fleet")));
+    addRotateEventListener(".place-ship-cell", player);
+    DragNDrop.attachDragListeners();
   };
 
   return {
