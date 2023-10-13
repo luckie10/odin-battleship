@@ -27,12 +27,15 @@ function Ship(type, vertical = false) {
 
   const isSunk = () => length <= 0;
 
+  const toggleVertical = () => (state.vertical = !state.vertical);
+
   return {
     ...stateAccess(state),
     type,
     length,
     hit,
     isSunk,
+    toggleVertical,
   };
 }
 
