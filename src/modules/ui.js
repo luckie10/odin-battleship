@@ -14,7 +14,6 @@ const UI = (() => {
   const resetGame = () => {
     const player = Game.getPlayer();
     const opp = Game.getOpponent();
-
     player.resetGameboard();
     opp.resetGameboard();
 
@@ -48,7 +47,7 @@ const UI = (() => {
   const attachAttackListeners = (parent) => {
     const cells = parent.querySelectorAll(".grid-cell");
     cells.forEach((cell) =>
-      cell.addEventListener("click", sendAttack, { once: true })
+      cell.addEventListener("click", sendAttack, { once: true }),
     );
   };
 
@@ -74,7 +73,7 @@ const UI = (() => {
     grid.style.gridTemplateRows = `repeat(${y}, 1fr)`;
 
     board.forEach((value, key) =>
-      grid.append(generateCell(value, key, isPlayer))
+      grid.append(generateCell(value, key, isPlayer)),
     );
 
     return grid;
@@ -82,7 +81,7 @@ const UI = (() => {
 
   const rotateShip = (event, player) => {
     const target = event.target.parentElement;
-    const ship = player.get("fleet")[target.dataset.ship];
+    const ship = player.get("fleet")[target.id];
 
     target.classList.toggle("vertical");
     ship.toggleVertical();
@@ -92,21 +91,21 @@ const UI = (() => {
     const elements = document.querySelectorAll(elementSelector);
 
     elements.forEach((el) =>
-      el.addEventListener("dblclick", (e) => rotateShip(e, player))
+      el.addEventListener("dblclick", (e) => rotateShip(e, player)),
     );
   };
 
   const renderShip = (ship) => {
     const shipContainer = createElement("div", {
+      id: ship.type,
       class: `place-ship ${ship.get("vertical") ? "vertical" : ""}`,
       draggable: true,
-      "data-ship": ship.type,
     });
 
     for (let i = 0; i < ship.length; i++) {
       const cell = createElement("div", {
         class: "place-ship-cell",
-        "data-cell": i,
+        "data-cell-index": i,
       });
 
       shipContainer.append(cell);
@@ -147,6 +146,7 @@ const UI = (() => {
   };
 
   return {
+    generateGrid,
     updatePlayerGrid,
     renderPlayerGrids,
     toggleGameover,
