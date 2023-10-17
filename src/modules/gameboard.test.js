@@ -13,16 +13,22 @@ beforeAll(() => {
 
 describe("placeShip function", () => {
   test("Place ships by calling Ship factory", () => {
-    const ship = gb.placeShip(["a0", "b0", "c0"], fleet["cruiser"]);
-    expect(gb.board.get("a0")).toBe(ship);
-    expect(gb.board.get("b0")).toBe(ship);
-    expect(gb.board.get("c0")).toBe(ship);
+    const ship = gb.placeShip(["00", "10", "20"], fleet["cruiser"]);
+    expect(gb.get("board").get("00")).toBe(ship);
+    expect(gb.get("board").get("10")).toBe(ship);
+    expect(gb.get("board").get("20")).toBe(ship);
   });
 
   test("Ships cannot overlap locations", () => {
-    gb.placeShip(["a1", "a2", "a3", "a4"], fleet["battleship"]);
+    gb.placeShip(["01", "02", "03", "04"], fleet["battleship"]);
     expect(() =>
-      gb.placeShip(["a3", "b3", "c3", "d4"], fleet["battleship"])
+      gb.placeShip(["03", "13", "23", "34"], fleet["battleship"]),
+    ).toThrow(Error);
+  });
+
+  test("Reject out of bounds ship", () => {
+    expect(() =>
+      gb.placeShip(["18", "19", "110", "111"], fleet["battleship"]),
     ).toThrow(Error);
   });
 
@@ -33,19 +39,19 @@ describe("placeShip function", () => {
 
 describe("recieveAttack function", () => {
   beforeAll(() => {
-    gb.placeShip(["c5", "c6", "c7", "c8"], fleet["battleship"]);
+    gb.placeShip(["25", "26", "27", "28"], fleet["battleship"]);
   });
 
   test("Attack hits a ship", () => {
-    gb.recieveAttack("c6");
-    gb.recieveAttack("c8");
-    expect(gb.board.get("c6")).toBe("hit");
-    expect(gb.board.get("c8")).toBe("hit");
+    gb.recieveAttack("26");
+    gb.recieveAttack("28");
+    expect(gb.get("board").get("26")).toBe("hit");
+    expect(gb.get("board").get("28")).toBe("hit");
   });
 
   test("Attack missed", () => {
-    gb.recieveAttack("a1");
-    expect(gb.board.get("a1")).toBe("miss");
+    gb.recieveAttack("01");
+    expect(gb.get("board").get("01")).toBe("miss");
   });
 });
 
@@ -55,8 +61,8 @@ describe("hasActiveShips function", () => {
   });
 
   test("no active ships", () => {
-    gb.recieveAttack("c5");
-    gb.recieveAttack("c7");
+    gb.recieveAttack("25");
+    gb.recieveAttack("27");
     expect(gb.hasActiveShips()).toBe(false);
   });
 });

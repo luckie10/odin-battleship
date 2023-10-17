@@ -1,10 +1,6 @@
 import { stateAccess } from "../util";
 
 const Gameboard = (size = [10, 10]) => {
-  const state = {
-    activeShips: 0,
-  };
-
   const attackableCoords = [];
 
   const generateBoard = ([x, y]) => {
@@ -19,14 +15,20 @@ const Gameboard = (size = [10, 10]) => {
     return board;
   };
 
-  const board = generateBoard(size);
+  const state = {
+    activeShips: 0,
+    board: generateBoard(size),
+  };
 
   const placeShip = (coords, ship) => {
     coords.map((coord) => {
-      if (board.get(coord))
+      if (!state.board.has(coord))
+        throw new Error("Ship placement out of bounds");
+
+      if (state.board.get(coord))
         throw new Error(`A ship already exists at the ${coord} location`);
 
-      board.set(coord, ship);
+      state.board.set(coord, ship);
     });
     state.activeShips++;
 
@@ -35,21 +37,22 @@ const Gameboard = (size = [10, 10]) => {
 
   const clearBoard = () => {
     state.activeShips = 0;
-    board.clear();
+    state.board.clear();
+    state.board = generateBoard(size);
   };
 
   const recieveAttack = (coord) => {
     const coordIndex = attackableCoords.indexOf(coord);
     attackableCoords.splice(coordIndex, 1);
 
-    const boardCell = board.get(coord);
+    const boardCell = state.board.get(coord);
     if (!boardCell) {
-      board.set(coord, "miss");
+      state.board.set(coord, "miss");
       return "miss";
     }
 
     boardCell.hit();
-    board.set(coord, "hit");
+    state.board.set(coord, "hit");
     if (boardCell.isSunk()) {
       state.activeShips--;
     }
@@ -62,7 +65,6 @@ const Gameboard = (size = [10, 10]) => {
     ...stateAccess(state),
     attackableCoords,
     size,
-    board,
     placeShip,
     clearBoard,
     recieveAttack,

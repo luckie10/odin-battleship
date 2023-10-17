@@ -66,7 +66,8 @@ const UI = (() => {
   };
 
   const generateGrid = (player, isPlayer) => {
-    const { board, size } = player.getGameboard();
+    const { size } = player.getGameboard();
+    const board = player.getGameboard().get("board");
     const [x, y] = size;
     const grid = createElement("div", { class: "grid" });
     grid.style.gridTemplateColumns = `repeat(${x}, 1fr)`;
