@@ -21,15 +21,15 @@ describe("placeShip function", () => {
 
   test("Ships cannot overlap locations", () => {
     gb.placeShip(["01", "02", "03", "04"], fleet["battleship"]);
-    expect(() =>
-      gb.placeShip(["03", "13", "23", "34"], fleet["battleship"]),
-    ).toThrow(Error);
+    expect(gb.placeShip(["03", "13", "23", "34"], fleet["battleship"])).toBe(
+      false,
+    );
   });
 
   test("Reject out of bounds ship", () => {
-    expect(() =>
-      gb.placeShip(["18", "19", "110", "111"], fleet["battleship"]),
-    ).toThrow(Error);
+    expect(gb.placeShip(["18", "19", "110", "111"], fleet["battleship"])).toBe(
+      false,
+    );
   });
 
   afterAll(() => {

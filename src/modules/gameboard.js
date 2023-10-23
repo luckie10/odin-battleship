@@ -21,18 +21,17 @@ const Gameboard = (size = [10, 10]) => {
   };
 
   const placeShip = (coords, ship) => {
-    coords.map((coord) => {
-      if (!state.board.has(coord))
-        throw new Error("Ship placement out of bounds");
+    const valid = coords.every(
+      (coord) => state.board.has(coord) && !state.board.get(coord),
+    );
+    if (!valid) return false;
 
-      if (state.board.get(coord))
-        throw new Error(`A ship already exists at the ${coord} location`);
-
+    coords.forEach((coord) => {
       state.board.set(coord, ship);
     });
     state.activeShips++;
 
-    return ship;
+    return true;
   };
 
   const clearBoard = () => {
