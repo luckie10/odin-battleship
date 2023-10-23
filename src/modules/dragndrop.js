@@ -25,10 +25,21 @@ const DragNDrop = (() => {
     return coords;
   };
 
+  const attachDropListeners = (elements) => {
+    const gridCell = document.querySelectorAll(".grid-cell");
+    gridCell.forEach((cell) => {
+      cell.addEventListener("drop", onDrop);
+      cell.addEventListener("dragover", (event) => event.preventDefault());
+    });
+  };
+
   const reloadShipPlacementGrid = (player) => {
     const container = document.querySelector(".left-container");
     removeAllChildren(container);
-    UI.generateGrid(player, true);
+
+    const grid = UI.generateGrid(player, true);
+    container.append(grid);
+    attachDropListeners();
   };
 
   const onDrop = (event) => {
@@ -36,14 +47,18 @@ const DragNDrop = (() => {
 
     const player = Game.getPlayer();
 
-    //  determine if coords are inbounds
-    // place ship on gameboard
-    // reload ui
-
     const shipElement = document.getElementById(draggedShip);
     const ship = player.get("fleet")[shipElement.id];
 
-    console.log(getDroppedCoords(event.target, ship));
+    const coords = getDroppedCoords(event.target, ship);
+    const gameboard = player.getGameboard();
+    const result = gameboard.placeShip(coords, ship);
+
+    if (result) {
+      reloadShipPlacementGrid(player);
+      shipElement.remove();
+      if (gameboard.isFleetPlaced()) console.log("MOVE Along");
+    }
   };
 
   const attachDragListeners = (elements) => {
@@ -55,11 +70,7 @@ const DragNDrop = (() => {
       cell.addEventListener("mousedown", registerCellIndex),
     );
 
-    const gridCell = document.querySelectorAll(".grid-cell");
-    gridCell.forEach((cell) => {
-      cell.addEventListener("drop", onDrop);
-      cell.addEventListener("dragover", (event) => event.preventDefault());
-    });
+    attachDropListeners(elements);
   };
 
   return {
