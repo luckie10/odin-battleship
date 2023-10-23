@@ -11,20 +11,6 @@ const DragNDrop = (() => {
   const registerCellIndex = (event) =>
     (draggedShipCellIndex = event.target.dataset.cellIndex);
 
-  const getDroppedCoords = (target, ship) => {
-    const coords = [];
-    const [y, x] = target.dataset.coords.split("");
-
-    for (let i = 0; i < ship.length; i++) {
-      const coord = ship.get("vertical")
-        ? `${Number(y) - draggedShipCellIndex + i}${x}`
-        : `${y}${Number(x) - draggedShipCellIndex + i}`;
-      coords.push(coord);
-    }
-
-    return coords;
-  };
-
   const attachDropListeners = (elements) => {
     const gridCell = document.querySelectorAll(".grid-cell");
     gridCell.forEach((cell) => {
@@ -50,9 +36,12 @@ const DragNDrop = (() => {
     const shipElement = document.getElementById(draggedShip);
     const ship = player.get("fleet")[shipElement.id];
 
-    const coords = getDroppedCoords(event.target, ship);
     const gameboard = player.getGameboard();
-    const result = gameboard.placeShip(coords, ship);
+    const result = gameboard.placeShip(
+      event.target.dataset.coords,
+      ship,
+      draggedShipCellIndex,
+    );
 
     if (result) {
       reloadShipPlacementGrid(player);

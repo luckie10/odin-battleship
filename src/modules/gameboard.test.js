@@ -1,68 +1,85 @@
 import Gameboard from "./gameboard.js";
 import Player from "./player.js";
 
-let gb;
+let gameboard;
 let player;
 let fleet;
 
-beforeAll(() => {
-  gb = Gameboard();
-  player = Player(gb);
+beforeEach(() => {
+  gameboard = Gameboard();
+  player = Player(gameboard);
   fleet = player.get("fleet");
 });
 
 describe("placeShip function", () => {
-  test("Place ships by calling Ship factory", () => {
-    const ship = gb.placeShip(["00", "10", "20"], fleet["cruiser"]);
-    expect(gb.get("board").get("00")).toBe(ship);
-    expect(gb.get("board").get("10")).toBe(ship);
-    expect(gb.get("board").get("20")).toBe(ship);
+  test("Place horizontal ship", () => {
+    const cruiser = fleet["cruiser"];
+    gameboard.placeShip("00", cruiser);
+    expect(gameboard.get("board").get("00")).toBe(cruiser);
+    expect(gameboard.get("board").get("01")).toBe(cruiser);
+    expect(gameboard.get("board").get("02")).toBe(cruiser);
+  });
+
+  test("Place vertical ship", () => {
+    const cruiser = fleet["cruiser"];
+    cruiser.toggleVertical();
+    gameboard.placeShip("00", cruiser);
+    expect(gameboard.get("board").get("00")).toBe(cruiser);
+    expect(gameboard.get("board").get("10")).toBe(cruiser);
+    expect(gameboard.get("board").get("20")).toBe(cruiser);
   });
 
   test("Ships cannot overlap locations", () => {
-    gb.placeShip(["01", "02", "03", "04"], fleet["battleship"]);
-    expect(gb.placeShip(["03", "13", "23", "34"], fleet["battleship"])).toBe(
-      false,
-    );
+    const cruiser = fleet["cruiser"];
+    const battleship = fleet["battleship"];
+    battleship.toggleVertical();
+    gameboard.placeShip("01", cruiser);
+    expect(gameboard.placeShip("03", battleship)).toBe(false);
   });
 
   test("Reject out of bounds ship", () => {
-    expect(gb.placeShip(["18", "19", "110", "111"], fleet["battleship"])).toBe(
-      false,
-    );
-  });
-
-  afterAll(() => {
-    gb.clearBoard();
+    expect(gameboard.placeShip("18", fleet["battleship"])).toBe(false);
   });
 });
 
 describe("recieveAttack function", () => {
-  beforeAll(() => {
-    gb.placeShip(["25", "26", "27", "28"], fleet["battleship"]);
+  beforeEach(() => {
+    gameboard.placeShip("25", fleet["battleship"]);
   });
 
   test("Attack hits a ship", () => {
-    gb.recieveAttack("26");
-    gb.recieveAttack("28");
-    expect(gb.get("board").get("26")).toBe("hit");
-    expect(gb.get("board").get("28")).toBe("hit");
+    const board = gameboard.get("board");
+    expect(board.get("26")).toBe(fleet["battleship"]);
+    expect(board.get("28")).toBe(fleet["battleship"]);
+    gameboard.recieveAttack("26");
+    gameboard.recieveAttack("28");
+    expect(board.get("26")).toBe("hit");
+    expect(board.get("28")).toBe("hit");
   });
 
   test("Attack missed", () => {
-    gb.recieveAttack("01");
-    expect(gb.get("board").get("01")).toBe("miss");
+    const board = gameboard.get("board");
+    expect(board.get("01")).toBe(null);
+    gameboard.recieveAttack("01");
+    expect(board.get("01")).toBe("miss");
   });
 });
 
 describe("hasActiveShips function", () => {
+  beforeEach(() => {
+    gameboard.placeShip("25", fleet["battleship"]);
+  });
+
   test("has active ships", () => {
-    expect(gb.hasActiveShips()).toBe(true);
+    expect(gameboard.hasActiveShips()).toBe(true);
   });
 
   test("no active ships", () => {
-    gb.recieveAttack("25");
-    gb.recieveAttack("27");
-    expect(gb.hasActiveShips()).toBe(false);
+    expect(gameboard.hasActiveShips()).toBe(true);
+    gameboard.recieveAttack("25");
+    gameboard.recieveAttack("26");
+    gameboard.recieveAttack("27");
+    gameboard.recieveAttack("28");
+    expect(gameboard.hasActiveShips()).toBe(false);
   });
 });

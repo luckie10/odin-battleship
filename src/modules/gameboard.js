@@ -22,7 +22,17 @@ const Gameboard = (size = [10, 10]) => {
     placedShips: [],
   };
 
-  const placeShip = (coords, ship) => {
+  const placeShip = (targetCoord, ship, shipCellIndex = 0) => {
+    const coords = [];
+    const [y, x] = Array.from(targetCoord);
+
+    for (let i = 0; i < ship.length; i++) {
+      const coord = ship.get("vertical")
+        ? `${Number(y) - shipCellIndex + i}${x}`
+        : `${y}${Number(x) - shipCellIndex + i}`;
+      coords.push(coord);
+    }
+
     const isValid = coords.every(
       (coord) => state.board.has(coord) && !state.board.get(coord),
     );
@@ -43,6 +53,7 @@ const Gameboard = (size = [10, 10]) => {
     state.activeShips = 0;
     state.board.clear();
     state.board = generateBoard(size);
+    state.placedShips = [];
   };
 
   const recieveAttack = (coord) => {
