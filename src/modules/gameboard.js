@@ -19,7 +19,7 @@ const Gameboard = (size = [10, 10]) => {
   const state = {
     activeShips: 0,
     board: generateBoard(size),
-    placedShips: [],
+    placedShips: new Set(),
   };
 
   const placeShip = (targetCoord, ship, shipCellIndex = 0) => {
@@ -42,12 +42,12 @@ const Gameboard = (size = [10, 10]) => {
       state.board.set(coord, ship);
     });
     state.activeShips++;
-    state.placedShips.push(ship);
+    state.placedShips.add(ship);
 
     return true;
   };
 
-  const isFleetPlaced = () => state.placedShips.length === shipTypes.length;
+  const isFleetPlaced = () => state.placedShips.size === shipTypes.length;
 
   const clearBoard = () => {
     state.activeShips = 0;
