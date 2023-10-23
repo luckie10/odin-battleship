@@ -1,3 +1,4 @@
+import { shipTypes } from "./ship";
 import { stateAccess } from "../util";
 
 const Gameboard = (size = [10, 10]) => {
@@ -18,21 +19,25 @@ const Gameboard = (size = [10, 10]) => {
   const state = {
     activeShips: 0,
     board: generateBoard(size),
+    placedShips: [],
   };
 
   const placeShip = (coords, ship) => {
-    const valid = coords.every(
+    const isValid = coords.every(
       (coord) => state.board.has(coord) && !state.board.get(coord),
     );
-    if (!valid) return false;
+    if (!isValid) return false;
 
     coords.forEach((coord) => {
       state.board.set(coord, ship);
     });
     state.activeShips++;
+    state.placedShips.push(ship);
 
     return true;
   };
+
+  const isFleetPlaced = () => state.placedShips.length === shipTypes.length;
 
   const clearBoard = () => {
     state.activeShips = 0;
@@ -68,6 +73,7 @@ const Gameboard = (size = [10, 10]) => {
     clearBoard,
     recieveAttack,
     hasActiveShips,
+    isFleetPlaced,
   };
 };
 
