@@ -53,7 +53,7 @@ const UI = (() => {
 
   const generateCell = (value, key, isPlayer) => {
     const cell = createElement("div", {
-      class: `grid-cell`,
+      class: `grid-cell cell-${key}`,
       "data-coords": key,
     });
 
