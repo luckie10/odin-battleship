@@ -22,9 +22,27 @@ const Player = (gameboard = Gameboard(), name = "") => {
     return Math.random() * (max - min) + min;
   };
 
+  const randomShipOrientation = (ship) => {
+    Math.floor(getRandomRange(0, 2))
+      ? state.fleet[ship].toggleVertical()
+      : false;
+  };
+
+  const placeFleetRandomly = () => {
+    const ships = shipTypes.slice();
+
+    while (ships.length) {
+      const ship = ships.at(-1);
+      randomShipOrientation(ship);
+      let randomCoord = String(Math.floor(getRandomRange(0, 100)));
+      const result = state.gameboard.placeShip(randomCoord, state.fleet[ship]);
+      if (result) ships.pop();
+    }
+  };
+
   const placeRandomAttack = () => {
     let randomIndex = Math.floor(
-      getRandomRange(0, gameboard.attackableCoords.length)
+      getRandomRange(0, gameboard.attackableCoords.length),
     );
     let randomCoord = gameboard.attackableCoords[randomIndex];
 
@@ -43,6 +61,7 @@ const Player = (gameboard = Gameboard(), name = "") => {
     resetGameboard,
     placeRandomAttack,
     recieveAttack,
+    placeFleetRandomly,
   };
 };
 

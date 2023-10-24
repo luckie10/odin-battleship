@@ -5,9 +5,9 @@ import Player from "./player";
 const Game = (() => {
   const player = Player(Gameboard(), "player");
   const opponent = Player(Gameboard(), "opponent");
+  opponent.placeFleetRandomly();
 
   UI.renderShipPlacement(player);
-  // UI.renderPlayerGrids(player, opponent);
 
   const getPlayer = () => player;
   const getOpponent = () => opponent;
