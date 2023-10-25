@@ -15,10 +15,13 @@ const UI = (() => {
     const player = Game.getPlayer();
     const opp = Game.getOpponent();
     player.resetGameboard();
+    player.resetFleet();
     opp.resetGameboard();
+    opp.resetFleet();
+    opp.placeFleetRandomly();
 
     clearGridContainers();
-    renderPlayerGrids(player, opp);
+    renderShipPlacement(player);
     toggleGameover();
   };
 
