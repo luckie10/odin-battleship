@@ -18,6 +18,8 @@ const Player = (gameboard = Gameboard(), name = "") => {
 
   const resetGameboard = () => (state.gameboard = Gameboard());
 
+  const resetFleet = () => (state.fleet = generateFleet(shipTypes));
+
   const getRandomRange = (min, max) => {
     return Math.random() * (max - min) + min;
   };
@@ -59,6 +61,7 @@ const Player = (gameboard = Gameboard(), name = "") => {
     ...stateAccess(state),
     getGameboard,
     resetGameboard,
+    resetFleet,
     placeRandomAttack,
     recieveAttack,
     placeFleetRandomly,
