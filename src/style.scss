@@ -94,3 +94,16 @@
 .vertical {
   flex-direction: column;
 }
+
+.start-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 500px;
+  height: 500px;
+}
+
+.start-button {
+  border: 1px solid black;
+  padding: 10px 20px;
+}

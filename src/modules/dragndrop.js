@@ -32,6 +32,7 @@ const DragNDrop = (() => {
     event.preventDefault();
 
     const player = Game.getPlayer();
+    const opponenet = Game.getOpponent();
 
     const shipElement = document.getElementById(draggedShip);
     const ship = player.get("fleet")[shipElement.id];
@@ -46,7 +47,7 @@ const DragNDrop = (() => {
     if (result) {
       reloadShipPlacementGrid(player);
       shipElement.remove();
-      if (gameboard.isFleetPlaced()) console.log("MOVE Along");
+      if (gameboard.isFleetPlaced()) UI.renderStartButton(player, opponenet);
     }
   };
 

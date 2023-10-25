@@ -133,6 +133,7 @@ const UI = (() => {
   };
 
   const renderPlayerGrids = (player, opponent) => {
+    clearGridContainers();
     leftContainer.append(generateGrid(player, true));
     rightContainer.append(generateGrid(opponent, false));
 
@@ -146,12 +147,26 @@ const UI = (() => {
     DragNDrop.attachDragListeners();
   };
 
+  const renderStartButton = (player, opponent) => {
+    const container = createElement("div", { class: "start-container" });
+    const button = createElement("button", {
+      class: "start-button",
+      textContent: "Start",
+    });
+
+    button.addEventListener("click", () => renderPlayerGrids(player, opponent));
+
+    container.append(button);
+    rightContainer.append(container);
+  };
+
   return {
     generateGrid,
     updatePlayerGrid,
     renderPlayerGrids,
     toggleGameover,
     renderShipPlacement,
+    renderStartButton,
   };
 })();
 
