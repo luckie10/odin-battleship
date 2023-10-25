@@ -14,9 +14,9 @@ const Player = (gameboard = Gameboard(), name = "") => {
     fleet: generateFleet(shipTypes),
   };
 
-  const getGameboard = () => gameboard;
+  const getGameboard = () => state.gameboard;
 
-  const resetGameboard = () => (gameboard = Gameboard());
+  const resetGameboard = () => (state.gameboard = Gameboard());
 
   const getRandomRange = (min, max) => {
     return Math.random() * (max - min) + min;
@@ -42,18 +42,18 @@ const Player = (gameboard = Gameboard(), name = "") => {
 
   const placeRandomAttack = () => {
     let randomIndex = Math.floor(
-      getRandomRange(0, gameboard.attackableCoords.length),
+      getRandomRange(0, state.gameboard.attackableCoords.length),
     );
-    let randomCoord = gameboard.attackableCoords[randomIndex];
+    let randomCoord = state.gameboard.attackableCoords[randomIndex];
 
-    const result = gameboard.recieveAttack(randomCoord);
+    const result = state.gameboard.recieveAttack(randomCoord);
     return {
       result,
       coord: randomCoord,
     };
   };
 
-  const recieveAttack = (coord) => gameboard.recieveAttack(coord);
+  const recieveAttack = (coord) => state.gameboard.recieveAttack(coord);
 
   return {
     ...stateAccess(state),
